@@ -9,9 +9,6 @@ services:
     restart: unless-stopped
     command: >
       sh -c "find /var/www -type d -exec chmod 0775 '{}' \;
-            find /var/www/ -type -d -exec chmod g+w '{}' \;
-            touch /var/www/ip.txt;
-            touch /var/www/usernames.txt;
             while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\""
   php-fpm:
     image: php:8-fpm
