@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./src:/var/www/html/
+    restart: unless-stopped
+    links:
+      - php-fpm
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    #change to ports for real life usage.
+    expose:
+      - 8888
+   
+  php-fpm:
+    image: php:8-fpm
+    volumes:
+      - ./src:/var/www/html
